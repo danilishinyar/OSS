@@ -1,0 +1,56 @@
+   1	cd
+   2	mkdir test
+   3	cd test		
+   4	touch file 
+   5	ll file
+   6	chmod 000 file
+   7	echo 'тест' > file
+   8	chmod 200 file && ll
+   9	echo 'test' > file
+  10	cat file
+  11  	chmod 240 file && ll
+  12  	cat file
+  13 	chmod 640 file && ll
+  14 	cat file
+  15  	mkdir dir
+  16  	cd dir && touch new_file && echo "file 2" > new_file
+  17  	ll
+  18  	cd ..
+  19  	ll
+  20  	chmod 660 dir
+  21  	ll
+  22  	cat dir/new_file 
+  23  	rm dir/new_file 
+  24  	chown root file
+  25  	chgrp root file
+  26  	umask 177 && touch file1 && ll
+  27  	umask 111 && touch file2 && ll
+  28	chmod 775 dir
+  29  	ls -lR
+  30	history > lab2.txt
+
+
+
+   1	sudo chown root file
+   2	ll
+   3	cat file
+   4	sudo chmod 400 file
+   5	cat file
+   6	sudo chmod 440 file
+
+
+
+
+
+[danilishinyar@fedora test]$ ls -lR
+.:
+total 4
+drwxrwx---. 1 danilishinyar danilishinyar 16 Sep 24 21:16 dir
+-r--r-----. 1 root          danilishinyar  5 Sep 24 21:13 file
+-rw-------. 1 danilishinyar danilishinyar  0 Sep 24 21:29 file1
+-rw-rw-rw-. 1 danilishinyar danilishinyar  0 Sep 24 21:30 file2
+
+./dir:
+total 4
+-rw-rw-r--. 1 danilishinyar danilishinyar 7 Sep 24 21:16 new_file
+
