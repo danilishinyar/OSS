@@ -4,6 +4,13 @@ err() {
   echo "[$(date +'%Y-%m-%dT%H:%M:%S')]: $*" >&2
 }
 
+
+if [ "$EUID" -ne 0 ]; then
+	echo "Only root can use this script"
+	exit
+fi
+
+
 PS3='> '
 options=(
          "Table of file systems" 
@@ -147,14 +154,52 @@ show_fs(){
 
 info_ext(){
   echo "Current ext* file systems:"
-
+	IFS=$'\n' read -r -d '' -a exts < <(df -t ext2 -t ext3 -t ext4 -t extcow --output=source,target | tail -n+2 | sed "s/ \+/ on /g" && printf '\0')
+	IFS=$'\n' read -r -d '' -a devices < <(df -t ext2 -t ext3 -t ext4 -t extcow --output=source | tail -n+2 && printf '\0')
+	makelist exts "Enter number of ext"
+	num=$?
+	[ $num == 0 ] && return
+	device=${devices[num-1]}
+	tune2fs -l $device | tail -n+2
 }
 
 
-if [ "$1" = "-h" ]; then
+change_params(){
+  echo "Current mounted dirs:"
+  IFS=$'\n' read -r -d '' -a arr < <(df -x proc -x sys -x tmpfs -x devtmpfs --output=target | tail -n+2 && printf '\0')
+	makelist arr "Enter number of dir you want to change"
+	num=$?
+	[ $num == 0 ] && return
+		fspath=${arr[num-1]}
+    echo "Choose option:"
+		select opt in "read only" "read and write"; do
+		case $opt in
+			"read only")
+				mount -o remount,ro $fspath
+				output $? "Congratz" "Error occured"
+				break
+				;;
+			"read and write")
+				mount -o remount,rw $fspath
+			  output $? "Congratz" "Error occured"
+				break
+				;;
+			*)
+				echo "Exit"
+				break
+				;;
+		esac
+		done
+}
+
+
+
+if [ "$1" = "-help" ]; then
   echo "Script that allows to manage file systems."
   exit
 fi
+
+
 while true
 do
 select opt in "${options[@]}"
@@ -173,14 +218,16 @@ do
       break
       ;;
     "Change params of fs")
-      echo "4"
+      change_params
+      break
       ;;
     "Show params of fs")
       show_fs
       break
       ;;
     "Info ext* fs")
-      echo "6"
+      info_ext
+      break
       ;;
     "Quit")
       exit
@@ -189,8 +236,3 @@ do
   esac
 done
 done
-
-
-
-
-
