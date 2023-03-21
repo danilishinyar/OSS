@@ -39,7 +39,7 @@ makelist() {
         return 0
         ;;
       *)
-        if [ -z $opt ]; then
+        if [ -z "$opt" ]; then
           err "Введите номер из списка"
           break
         else
@@ -98,10 +98,13 @@ find_in_journal() {
 
 
 manage_service() {
-  IFS=$'\n' read -r -d '' -a arr < <(systemctl list-units --type=service | head -n-6 | tail -n+2 && printf '\0')
+  IFS=$'\n' read -r -d '' -a arr < <(systemctl list-units --type=service | head -n-6 | tail -n+2 | cut -c 3- |  cut -d" " -f 1 && printf '\0')
   makelist arr "Номер сервиса: "
   num=$?
-  [ $num==0 ] && return
+  echo "========" $num
+  if [ $num -eq 0 ]; then
+    return
+  fi
   service=${arr[num-1]}
   options2=(
           "Включить службу"
@@ -132,11 +135,11 @@ manage_service() {
       break
       ;;
       "Вывести содержимое юнита службы")
-      less "$(getunit $service)"
+      less "$(systemctl status $service | head -n+2 | tail -n-1 | cut -f2 -d"(" | cut -f1 -d";")"
       break
       ;;
       "Отредактировать юнит службы")
-      vim "$(getunit $service)"
+        vim "$(systemctl status $service | head -n+2 | tail -n-1 | cut -f2 -d"(" | cut -f1 -d";")"
       break
       ;;
       "Назад")
