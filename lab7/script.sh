@@ -33,11 +33,11 @@ makelist() {
   do
   select opt in "${options1[@]}"; do
     case $opt in
-      Help)
+     "Help")
         echo $2
         break
         ;;
-      Exit)
+      "Exit")
         return 0
         ;;
       *)
