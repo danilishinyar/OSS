@@ -1,0 +1,98 @@
+   30  mkdir lab9
+   31  cd lab9
+   32  ldd /bin/login | grep pam
+   33  ll /lib64/libpam*
+   34  ll /lib64
+   35  ll /lib
+   36  ll /usr/lib/libpam*
+   37  ll /usr/lib/
+   38  ll /usr/lib/security
+   39  sudo apt intall pam-devel
+   40  sudo apt install pam-devel
+   41  find / -name "libpam*"
+   42  sudo find / -name "libpam*" 
+   43  vim /etc/pam.d/su
+   44  su
+   45  sudo vim /etc/pam.d/su
+   46  sudo useradd user
+   47  su user
+   48  sudo vim /etc/pam.d/su
+   49  su user
+   50  useradd user1
+   51  sudo useradd user1
+   52  su user1
+   53  sudo vim /etc/pam.d/su
+   54  sudo useradd user -g=wheel
+   55  sudo useradd user -g wheel
+   56  sudo useradd user -G wheel
+   57  sudo useradd -G wheel user1
+   58  sudo addgroup wheel
+   59  sudo useradd -G wheel user1
+   60  sudo useradd -G wheel user2
+   61  sudo vim /etc/pam.d/su
+   62  su user2
+   63  sudo su user2
+   64  sudo su user1
+   65  sudo vim /etc/pam.d/su
+   66  sudo vim /etc/pam.d/login
+   67  cp /etc/securetty sec
+   68  vim /etc/securetty
+   69  su
+   70  cp sec /etc/securetty
+   71  man pam_pwquality
+   72  vim /etc/security/pwquality.conf
+   73  sudo vim /etc/security/pwquality.conf
+   74  sudo vim /etc/pam.d/system-auth
+   75  sudo passwd danilishinyar
+   76  sudo passwd root
+   77  su
+   78  man pam_limits
+   79  sudo vim /etc/security/limits.conf
+   80  su user1
+   81  sudo passwd user1
+   82  su user1
+   83  sudo vim /etc/security/limits.cnf
+   84  sudo vim /etc/security/limits.conf
+   85  wget https://github.com/linux-pam/linux-pam/blob/master/examples/check_user.c
+   86  gcc check_user.c -o check_user -lpam -lpam_misc
+   87  ls
+   88  vim check_user.c
+   89  rm check_user.c
+   90  vim check_user.c
+   91  gcc check_user.c -o check_user -lpam -lpam_misc
+   92  sudo apt install libpam0g-dev
+   93  gcc check_user.c -o check_user -lpam -lpam_misc
+   94  vim /etc/pam.d/check
+   95  sudo vim /etc/pam.d/check
+   96  ls
+   97  check_user
+   98  ./check_user
+   99  sudo ./check_user
+  100  passwd danilishinyar
+  101  ./check_user danilishinyar
+  102  sudo useradd aaa
+  103  passwd aaa
+  104  sudo passwd aaa
+  105  ./check_user aaa
+  106  su aaa
+  107  vim check_user.c
+  108  gcc check_user.c -o check_user -lpam -lpam_misc
+  109  ./check_user
+  110  ./check_user danilishinyar
+  111  vim check_user.c
+  112  su aaa
+  113  sudo chage -E 2022 12 12
+  114  sudo chage -E 2022-12-12
+  115  sudo chage -E 20221212
+  116  sudo chage -E 20221212 aaa
+  117  su aaa
+  118  sudo chage -E 2022-12-12 aaa
+  119  su aaa
+  120  ./check_user aaa
+  121  sudo passwd aaa
+  122  sudo passwd -l aaa
+  123  ./check_user aaa
+  124  sudo passwd -u aaa
+  125  ./check_user aaa
+  126  su aaa
+  127  history > history.txt
